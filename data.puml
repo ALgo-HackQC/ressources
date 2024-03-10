@@ -1,0 +1,71 @@
+@startuml
+
+entity "Users" as users {
+  + id [PK]
+  --
+  last_name
+  first_name
+  username
+  email
+  password_hash
+}
+
+entity "Locations" as locations {
+  + id [PK]
+  --
+  latitude
+  longitude
+}
+
+entity "Installations" as installations {
+ + id [PK]
+ --
+ name
+ type
+ description
+ --
+ location_id [FK]
+}
+
+entity "Contributions" as contributions {
+  + id [PK]
+  --
+  date
+  note
+  --
+  user_id [FK]
+  installation_id [FK]
+}
+
+entity "Reports" as reports {
+  + id [PK]
+  --
+  date
+  severity
+  problem
+  --
+  user_id [FK]
+  installation_id [FK]
+}
+
+entity "Authorizations" as authorizations {
+  + id [PK]
+  --
+  token
+  issue_date
+  expiration
+  --
+  + user_id [FK]
+}
+
+installations --o locations : Contains
+
+contributions --o users : Contributed by
+contributions --o installations : Contributed for
+
+reports --o users : Reported by
+reports --o installations : Reported for
+
+authorizations --o users : Issued to
+
+@enduml
